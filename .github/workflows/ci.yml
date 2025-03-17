@@ -1,0 +1,45 @@
+name: Symfony CI
+# Déclenchement de la pipeline sur chaque push/pull request vers la branche main
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    build:
+        # Utiliser un environnement Linux pour l'exécution
+        runs-on: ubuntu-latest
+
+        steps:
+            # Étape 1 : Récupération du code depuis le dépôt
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            # Étape 2 : Installation de PHP avec les extensions nécessaires
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.2'
+                  extensions: mbstring, intl, pdo_mysql, ctype, iconv
+
+            # Étape 3 : Cache des dépendances Composer pour accélérer le processus
+            - name: Cache Composer dependencies
+              uses: actions/cache@v3
+              with:
+                  path: ~/.composer/cache/files
+                  key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: |
+                      composer-${{ runner.os }}-
+
+            # Étape 4 : Installation des dépendances Symfony
+            - name: Install dependencies
+              run: composer install --no-interaction --no-progress --prefer-dist
+
+            # Étape 5 : Lancer les tests PHPUnit
+            - name: Run tests
+              run: php bin/phpunit
+        # Identifiant du process pour github
+        name: Tests Symfony
