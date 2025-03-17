@@ -63,11 +63,14 @@ namespace App\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-class ExampleTest extends TestCase
+class HomepageControllerTest extends TestCase
 {
-    public function testExample(): void
+    public function testHomepageWorks(): void
     {
-        $this->assertTrue(true);
+        $client = static::createClient();
+        $client->request('GET', '/');
+
+        $this->assertResponseIsSuccessful();
     }
 }
 ```
@@ -76,12 +79,12 @@ class ExampleTest extends TestCase
 ```bash
 php bin/phpunit
 ```
-✅ Si le test réussit → Le message "OK" doit s'afficher.
+Le test doit échouer étant donné que l'on a pas de route pour la homepage.
 
 ---
 
 ## ✅ **3. Configuration de la pipeline GitHub Actions**
-1. Crée le dossier de workflow :
+1. Crée le dossier de workflow un dossier .github et à l'intérieur un dossier workflows:
 ```bash
 mkdir -p .github/workflows
 ```
@@ -105,21 +108,15 @@ git push origin main
 
 ## ✅ **4. Vérification de la pipeline sur GitHub**
 1. Va dans le dépôt GitHub → Onglet **Actions**
-2. Lance manuellement la pipeline (ou fais un push) → ✅ Les tests doivent passer !
+2. Lance manuellement la pipeline (ou fais un push) → ✅ Les tests doivent échouer !
 
 ---
 
-## ✅ **5. Problèmes courants et solutions**
-| Erreur | Solution |
-|--------|----------|
-| `phpunit: not found` | Vérifie que PHPUnit est installé correctement avec Composer |
-| `Tests échoués` | Vérifie le code du test dans `tests/` |
-| `No such file or directory` | Vérifie que le chemin des fichiers de test est correct |
-
+## ✅ **5. Rédiger le code permettant de faire passer le premier test**
+| Créer un controller HomepageController et définir une route sur / 
 ---
 
-## 🌟 **Prochaine étape**
-- Ajoute des tests supplémentaires.
-- Intègre une couverture de code (exemple : Codecov).
+## 🌟 **Faire un nouveau commit et un nouveau push **
+Cette fois les tests doivent passer au vert
 
-✅ C'est terminé ! 🎉
+✅ C'est terminé ! 
