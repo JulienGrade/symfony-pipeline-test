@@ -55,7 +55,7 @@ composer require --dev phpunit/phpunit
 mkdir tests
 ```
 
-3. Crée un fichier de test basique `tests/ExampleTest.php` :
+3. Crée un fichier de test basique `tests/HomepageControllerTest.php` :
 ```php
 <?php
 
